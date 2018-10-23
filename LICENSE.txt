@@ -1,0 +1,33 @@
+public static boolean longPressKeyCode(UiDevice mUiDevie, int keyCode, int times) {
+        try {
+            
+            final long eventTime = SystemClock.uptimeMillis();
+
+            KeyEvent downEvent = new KeyEvent(eventTime, eventTime, KeyEvent.ACTION_DOWN, keyCode,
+                    0, 0, KeyCharacterMap.VIRTUAL_KEYBOARD, 0, 0,
+                    InputDevice.SOURCE_KEYBOARD);
+
+            if ((Boolean) injectInputEvent.invoke(bridgeObj, downEvent, true )) {
+                SystemClock.sleep(SECOND/2);
+                for (int repetition = 0; repetition < times; repetition++) {
+                    KeyEvent newEvent = KeyEvent.changeTimeRepeat(downEvent,
+                            SystemClock.uptimeMillis(), repetition,
+                            downEvent.getFlags() | KeyEvent.FLAG_LONG_PRESS);
+                    injectInputEvent.invoke(bridgeObj, newEvent, true );
+                    SystemClock.sleep(SECOND);
+                }
+
+                KeyEvent upEvent = new KeyEvent(eventTime, eventTime, KeyEvent.ACTION_UP, keyCode,
+                        0, 0, KeyCharacterMap.VIRTUAL_KEYBOARD, 0, 0,
+                        InputDevice.SOURCE_KEYBOARD);
+
+                if ((Boolean) injectInputEvent.invoke(bridgeObj, upEvent, true )) {
+                    return true;
+                }
+            }
+        } catch(IllegalArgumentException | IllegalAccessException | NoSuchMethodException
+                | InvocationTargetException | NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
