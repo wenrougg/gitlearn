@@ -1,6 +1,6 @@
 sendevent /dev/input/event2 3 57 0
 sendevent /dev/input/event2 1 330 1
-sendevent /dev/input/event2 1 325 1
+sendevent /dev/input/event2 1 325 122
 sendevent /dev/input/event2 3 53 433
 sendevent /dev/input/event2 3 54 2744
 sendevent /dev/input/event2 3 58 1
